@@ -131,7 +131,7 @@ extern "C" {
  * achieve the same behaviour.  Must be set to at least 1, since
  * the wake-up function is called just before the timeout.
  */
-# define U_CELL_POWER_SAVING_UART_INACTIVITY_TIMEOUT_SECONDS 6
+# define U_CELL_POWER_SAVING_UART_INACTIVITY_TIMEOUT_SECONDS 1
 #endif
 
 #ifndef U_CELL_POWER_SAVING_UART_WAKEUP_MARGIN_MILLISECONDS

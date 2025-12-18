@@ -773,6 +773,26 @@ int32_t uCellNetSetRegistrationStatusCallback(uDeviceHandle_t cellHandle,
                                                                  void *),
                                               void *pCallbackParameter);
 
+/** Enables or disables the context disable callback
+ *
+ * @param cellHandle                  the handle of the cellular
+ *                                    instance.
+ * @param[in] pCallback               pointer to the function to
+ *                                    handle any registration
+ *                                    state changes. Use NULL to
+ *                                    deactivate a previously
+ *                                    active registration status
+ *                                    callback.
+ * @param[in] pCallbackParameter      a pointer to be passed to
+ *                                    the call-back as its third
+ *                                    parameter; may be NULL.
+ * @return                            zero on success or negative
+*                                     error code on failure.
+ */
+int32_t uCellNetSetContextDisableCallback(uDeviceHandle_t cellHandle,
+                                              void (*pCallback) (void *),
+                                              void *pCallbackParameter);
+
 /** Enable or disable the module's base station connection
  * call-back. The callback will be called with the Boolean
  * parameter set to true when it enters connected state and

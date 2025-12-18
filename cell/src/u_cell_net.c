@@ -756,6 +756,10 @@ static void contextDeactivated(uCellPrivateInstance_t *pInstance)
         // we will reactivate the internal profile
         pInstance->profileState = U_CELL_PRIVATE_PROFILE_STATE_REQUIRES_REACTIVATION;
     }
+
+    if(pInstance->pContextDisableCallback != NULL) {
+        pInstance->pContextDisableCallback(pInstance->pContextDisableCallbackParameter);
+    }
 }
 
 // Detect a change in the state of context activation
@@ -3494,6 +3498,32 @@ int32_t uCellNetSetRegistrationStatusCallback(uDeviceHandle_t cellHandle,
         if (pInstance != NULL) {
             pInstance->pRegistrationStatusCallback = pCallback;
             pInstance->pRegistrationStatusCallbackParameter = pCallbackParameter;
+            errorCode = (int32_t) U_ERROR_COMMON_SUCCESS;
+        }
+
+        U_PORT_MUTEX_UNLOCK(gUCellPrivateMutex);
+    }
+
+    return errorCode;
+}
+
+// Enable or disable the registration status call-back.
+int32_t uCellNetSetContextDisableCallback(uDeviceHandle_t cellHandle,
+                                            void (*pCallback) (void *),
+                                            void *pCallbackParameter)
+{
+    int32_t errorCode = (int32_t) U_ERROR_COMMON_NOT_INITIALISED;
+    uCellPrivateInstance_t *pInstance;
+
+    if (gUCellPrivateMutex != NULL) {
+
+        U_PORT_MUTEX_LOCK(gUCellPrivateMutex);
+
+        pInstance = pUCellPrivateGetInstance(cellHandle);
+        errorCode = (int32_t) U_ERROR_COMMON_INVALID_PARAMETER;
+        if (pInstance != NULL) {
+            pInstance->pContextDisableCallback = pCallback;
+            pInstance->pContextDisableCallbackParameter = pCallbackParameter;
             errorCode = (int32_t) U_ERROR_COMMON_SUCCESS;
         }
 

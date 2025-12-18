@@ -532,6 +532,8 @@ typedef struct uCellPrivateInstance_t {
     void *pConnectionStatusCallbackParameter;
     void (*pGreetingCallback) (uDeviceHandle_t, void *);
     void *pGreetingCallbackParameter;
+    void (*pContextDisableCallback) (void *);
+    void *pContextDisableCallbackParameter;
     uCellPrivateNet_t *pScanResults;    /**< Anchor for list of network scan results. */
     uCellNetAuthenticationMode_t authenticationMode; /**< Authentication mode for PDP context. */
     int32_t sockNextLocalPort;

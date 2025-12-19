@@ -1553,6 +1553,7 @@ static int32_t publish(const uCellPrivateInstance_t *pInstance,
     bool messageWritten = false;
     uTimeoutStart_t timeoutStart;
     int32_t promptTimeoutSeconds = U_CELL_MQTT_PROMPT_TIMEOUT_NORMAL_SECONDS;
+    int32_t at_return_code = 0;
     size_t tryCount = 0;
 
     pContext = (volatile uCellMqttContext_t *) pInstance->pMqttContext;
@@ -1738,7 +1739,12 @@ static int32_t publish(const uCellPrivateInstance_t *pInstance,
                             uAtClientLock(atHandle);
                             uAtClientCommandStart(atHandle, "AT");
                             uAtClientCommandStopReadResponse(atHandle);
-                            uAtClientUnlock(atHandle);
+                            at_return_code = uAtClientUnlock(atHandle);
+                            // If there is an AT issue
+                            if(at_return_code != U_ERROR_COMMON_SUCCESS) {
+                                errorCode = at_return_code;
+                                break;
+                            }
 #endif
                         }
                         if ((pUrcStatus->flagsBitmap & (1 << U_CELL_MQTT_URC_FLAG_PUBLISH_SUCCESS)) != 0) {

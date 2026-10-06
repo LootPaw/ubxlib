@@ -1336,8 +1336,8 @@ static int32_t registerNetwork(uCellPrivateInstance_t *pInstance,
         uAtClientLock(atHandle);
         uAtClientTimeoutSet(atHandle, 1000);
         uAtClientCommandStart(atHandle, "AT+COPS=");
-        // Manual mode
-        uAtClientWriteInt(atHandle, 1);
+        // Manual mode with automatic fallback
+        uAtClientWriteInt(atHandle, 4);
         // Numeric format
         uAtClientWriteInt(atHandle, 2);
         // The network
